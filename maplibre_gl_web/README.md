@@ -1,1 +1,0 @@
-Contains the web interfaces for the [Flutter MapVina GL plugin](https://github.com/mapvina/flutter-mapvina-gl).

@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="io.github.mapvina.mapvinagl">
+  
+  <!-- Remove OfflineActivity from the offline plugin as it's not needed for Flutter -->
+  <application>
+    <activity
+        android:name="io.github.mapvina.android.plugins.offline.ui.OfflineActivity"
+        tools:node="remove" />
+  </application>
+</manifest>

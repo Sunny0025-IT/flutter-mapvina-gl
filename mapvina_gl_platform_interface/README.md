@@ -1,0 +1,1 @@
+Contains the web platform implementation for the [Flutter MapVina GL plugin](https://github.io/github/mapvina/flutter-mapvina-gl).

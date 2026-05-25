@@ -1,8 +1,3 @@
-# CHANGELOG
-
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
 ## [0.26.1](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.26.0...v0.26.1)
 
 > **Note:** Several users reported crashes on a range of Android devices after upgrading to 0.26.0, particularly on older / less recent hardware. These issues are addressed in 0.26.1 (see the Android fixes below).
@@ -21,15 +16,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.26.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.25.0...v0.26.0)
 
-#### Version 0.26.0 marks a milestone for `flutter-mapvina-gl`
-This release resolves numerous long-standing bugs accumulated over the years and completes the transition to **WASM compilation** for the web platform, ensuring full compatibility with Flutter's modern web toolchain.\
-It also introduces a new Example App for users to explore the latest features - see [mapvina_gl_example](mapvina_gl_example/) for details.
+**Version 0.26.0 is a milestone release for flutter-mapvina-gl.** \
+This release addresses numerous long-standing bugs that have accumulated over the years and completes the transition to the **WASM compilation** for the web platform, ensuring full compatibility with Flutter's modern web toolchain.
 
 ### Breaking
 * `initialCameraPosition` is now nullable to support style-defined camera options (#769).
-* `requestMyLocationLatLng()` now returns `Future<LatLng?>` instead of `Future<LatLng>`. Returns `null` when the user's location is unavailable (#784).
 * Removed `LocationEngineAndroidProperties`. All fields flattened into `LocationEnginePlatforms` with nullable platform-specific fields.\
-Use Platform-specific constructors: `LocationEnginePlatforms.android()`, `.iOS()`, `.web()` instead (#774).
+Use Platform-specific constructors: `LocationEnginePlatforms.android()`, `.iOS()`, `.web()` instead.
 * Removed deprecated typedefs: `MapvinaMapController`, `MapvinaMap`, `MapvinaStyles`. Use `MapVinaMapController`, `MapVinaMap`, `MapVinaStyles` instead.
 * Removed deprecated callback: `onInfoWindowTapped` from `MapVinaMapController`.
 * Removed deprecated methods: `removeImageSource` (use `removeSource`) and `addLayerBelow` (use `addImageLayerBelow`).
@@ -100,7 +93,6 @@ Use Platform-specific constructors: `LocationEnginePlatforms.android()`, `.iOS()
 * **Web**: `GeolocateControl` now respects `MyLocationTrackingMode` and triggers programmatically.
 * **Example**: GPS location page. Fixed web permission check, wired `onUserLocationUpdated`, web-specific tracking modes.
 * **Example**: GeoJSON cluster. Added `['has', 'point_count']` filter to fix null property errors on unclustered points.
-* **Example**: Added `ClusterPropertiesExample` demonstrating both the simple and reduce-expression forms of `clusterProperties` on the earthquakes dataset (#792).
 
 **Full Changelog**: [v0.25.0...v0.26.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.25.0...v0.26.0)
 
@@ -109,17 +101,9 @@ Use Platform-specific constructors: `LocationEnginePlatforms.android()`, `.iOS()
 ### Added
 * Logo customization options including visibility and position settings (#b4fb174).
 * Explicit annotation manager initialization with clear error handling (#668).
-* Web: Implemented `getStyle()` to return map style as JSON string.
-* Web: Implemented `getSourceIds()` to return list of source IDs.
-* Web: Improved `getLayers()` with safe null handling.
+* iOS: Attribution support for tile and raster sources with HTML link parsing.
 
 ### Changed
-* **BREAKING**: Web implementation migrated from deprecated `dart:js_util` to modern `dart:js_interop` API (#687).
-  - **WASM compatible**: Now supports Flutter's upcoming WASM compilation target
-  - Required for Flutter 3.38.4+ compatibility
-  - All JS interop classes updated to `@staticInterop` pattern with extension methods
-  - Improved type safety for JS ↔ Dart conversions
-  - No public API changes for users
 * MapVina Android SDK upgraded from `11.13.5` to `12.3.0` (#690).
   - Includes synchronous GeoJSON source updates
   - Support for MLT-format vector tile sources
@@ -136,26 +120,16 @@ Use Platform-specific constructors: `LocationEnginePlatforms.android()`, `.iOS()
 * Min/max zoom preference on iOS (#5230fab).
 * `queryRenderedFeatures` now returns all targets when supplying empty layers list on iOS, aligning behavior with Android (#680).
 * iOS: Enhanced LayerPropertyConverter to handle null values and improve expression parsing (#98660dc).
-  - Better handling of null values in layer properties
-  - Improved expression parsing for complex layer configurations
-* Web: Fixed `setPaintProperty` and `setLayoutProperty` to handle nullable `JSAny` values correctly (#12dfad2).
-* Web: Improved `jsify` function to create JS arrays correctly (#2b550ed).
 * Fixed `lineDasharray` and patterns reset to null in layer properties (#2b550ed).
-* Improved MapVinaMapController disposing to prevent memory leaks (#2b550ed).
+* Improved MapVinaMapController disposing to prevent memory leaks.
 * Removed unnecessary disposing of mapController in example app (#f989797).
-  - Cleaned up example code with minor fixes
-  - Improved example app stability
 * Fixed `setLayerProperties` and pattern images on web and Android (#9ce52a6).
   - Pattern images now correctly converted to RGBA format on web
   - Fixed mismatched image size error when loading pattern images
 
 ### Refactor
 * Complete refactor of example app with new UI and improved user experience (#ac877a4).
-  - Improved map sizing with responsive layouts (50-60% of screen height)
-  - Better button and control layouts across different screen sizes
-  - Enhanced visual design and usability
 * Refactored `cameraTargetBounds` implementation on Android and iOS for consistent behavior (#8bcd74a).
-* Refactored image upload on web - all images now converted to RGBA format for consistency (#9ce52a6).
 
 **Full Changelog**: [v0.24.1...v0.25.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.24.1...v0.25.0)
 
@@ -217,47 +191,39 @@ controller.onFeatureTapped.add((p, latLng, id, layerId, annotation) {
 ## [0.23.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.22.0...v0.23.0)
 > **Note**: This release has breaking changes.
 
-This consolidated release delivers runtime style switching, hover interactions, heatmap & visibility features, native SDK updates (Android 11.9.0 / iOS 6.14.0 with PMTiles), and broad naming / enum casing harmonization. It also fixes several interaction and stability issues across web and mobile. If you are upgrading from <= 0.22.x:
-* Review the breaking rename (`Mapvina` -> `MapVina`) and enum / const lowerCamelCase migration.
-* Adapt feature interaction callbacks: `onFeatureTapped` / `onFeatureDrag` now receive an `Annotation` instead of an `id` argument.
-* Ensure any style access happens after `onStyleLoaded` due to stricter style readiness checks.
+This release aligns the plugin with the latest MapVina Native (Android 11.9.0 / iOS 6.14.0), introduces runtime style switching APIs, hover interaction callbacks, and several annotation interaction improvements. It also contains a small breaking change for feature interaction callbacks.
 
 A big thank you to everyone who contributed to this update!
 
-### Breaking changes
-* Rename `Mapvina` to `MapVina` across APIs (#441).
-* Enum fields & const identifiers migrated to lower camel case (#415).
-* `onFeatureTapped` / `onFeatureDrag` replaced the raw `id` parameter with an `Annotation annotation` instance (update handler signatures).
+### Breaking Changes
+* `onFeatureDrag` / `onFeatureTapped` callback signatures now provide an `Annotation annotation` object instead of an `id` parameter. Update your handlers to remove the `id` argument and use `annotation.id` (or other annotation fields) as needed.
 
-### Added / Features
-* Runtime style switching APIs on controller (#444) and raw style JSON setting on iOS / Web (#603).
-* Hover interaction events (`onFeatureHover`) (#614).
-* Heatmap layer support (#365).
-* Bounds fitting API to change viewport to given bounds (#133).
-* Layer visibility control (#138).
-* `LatLngBounds.contains` convenience (#498).
+### Highlights
+* Runtime style switching via controller (`setStyle…`) without tearing down the map (#444, #603).
+* Hover interaction events (`onFeatureHover`) for richer desktop/web UX (#614).
+* Improved event handling reliability (cancellation & consumption fixes) (#621, #623).
+* Offline region download crash fix in example (#569) and style loaded safety checks (#563).
+* Updated MapVina Native bringing PMTiles & performance improvements (#552, #582).
 
-### Changed / Updates
-* MapVina Native: Android 11.9.0 & iOS 6.14.0 (PMTiles support, performance) (#552, #582).
-* Flutter / Gradle plugin & tooling compatibility update (#542).
-* Lint and analysis alignment via very_good_analysis and flutter_lints (#452, #434, #414, #419).
-* Package link updates & style resource relocation (`MapvinaStyles` moved to main package) (#435, #413).
+### Added / Updated
+* **Feature:** added set style method on controller (#444) & support setting raw style JSON on iOS/web (#603).
+* **Feature:** expose hovering events (`onFeatureHover`) (#614).
+* **Update:** bump Android to 11.9.0 & iOS to 6.14.0 (#582).
+* **Update:** update mapvina-native to the latest versions / PMTiles support (#552).
+* **CI/Tooling:** upgrade Flutter Gradle Plugin & compatibility with Flutter 3.29.0 (#542).
 
 ### Fixed
-* iOS code generation (Offset / Translate / expression arrays) (#481).
-* Annotation tap consumption now properly respected (`annotationConsumeTapEvents`).
+* iOS code generation: corrected handling of Offset / Translate / expression arrays in generated bindings (#481).
+* Annotation tap consumption now respected (`annotationConsumeTapEvents`).
 * Prevent calling `notifyListeners()` after controller disposal (#621).
 * Web: event listener cancellation & hover handling robustness (#623).
-* Offline region download crash in example (#569).
-* Added style loaded safety checks (#563).
-* Aligned example and web pubspec versions (#476).
-* Web: enforce mapvina-gl-js 4.x & remove shadow root stylesheet workaround (#409).
+* Example: offline region download crash (#569).
+* Added style readiness checks before access (#563).
 
 ### Refactor / Quality
-* Enable and fix additional lint rules (#452).
+* Enable and fix additional lint rules to enforce consistency (#452).
 
 **Full Changelog**: [v0.22.0...v0.23.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.22.0...v0.23.0)
-
 
 ## [0.22.0](https://github.io/github/mapvina/flutter-mapvina-gl/compare/v0.21.0...v0.22.0)
 

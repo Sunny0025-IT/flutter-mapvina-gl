@@ -25,7 +25,7 @@ We welcome contributions of all kinds: bug fixes, new features, documentation im
 
 ---
 ## Before You Start
-- Search existing [issues](https://github.com/mapvina/flutter-mapvina-gl/issues) & [PRs](https://github.com/mapvina/flutter-mapvina-gl/pulls) to avoid duplication.
+- Search existing [issues](https://github.io/github/mapvina/flutter-mapvina-gl/issues) & [PRs](https://github.io/github/mapvina/flutter-mapvina-gl/pulls) to avoid duplication.
 - For larger features, open a brief proposal issue or discussion first to align scope & design.
 - Keep PRs focused: small, reviewable units are merged faster.
 
